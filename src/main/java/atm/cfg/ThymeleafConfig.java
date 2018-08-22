@@ -5,19 +5,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 @Configuration
-public class ThymeleafConfig extends WebMvcConfigurerAdapter {
+public class ThymeleafConfig implements WebMvcConfigurer {
 
     @Bean
-    @Description("Thymeleaf template resolver serving HTML 5")
+    @Description("Thymeleaf template resolver serving HTML 5") //
     public ClassLoaderTemplateResolver templateResolver() {
 
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+
         templateResolver.setPrefix("templates/");
         templateResolver.setCacheable(false);
         templateResolver.setSuffix(".html");
@@ -42,6 +43,7 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter {
     public ViewResolver viewResolver() {
 
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding("UTF-8");
 
@@ -50,6 +52,6 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("redirect:home");
+        registry.addViewController("/").setViewName("index");
     }
 }

@@ -8,8 +8,6 @@ public class BankNote {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     protected Integer amount;
-    @ManyToOne
-    private ATM atm;
 
     public BankNote() {
     }

@@ -1,21 +1,17 @@
 package atm.domain;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class ATM {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany
-    private Set<BankNote> bankNotes;
 
     public ATM() {
-    }
-
-    public ATM(Set<BankNote> bankNotes) {
-        this.bankNotes = bankNotes;
     }
 
     public Long getId() {
@@ -24,13 +20,5 @@ public class ATM {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Set<BankNote> getBankNotes() {
-        return bankNotes;
-    }
-
-    public void setBankNotes(Set<BankNote> bankNotes) {
-        this.bankNotes = bankNotes;
     }
 }
