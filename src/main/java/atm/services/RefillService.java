@@ -3,5 +3,5 @@ package atm.services;
 import atm.domain.*;
 
 public interface RefillService {
-    void refillBankNotes(BankNote bankNote);
+    void refillBankNotes(BankNotes bankNotes);
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Refill</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:include="navbar :: menu"></div>
+<br>
+<center>
+    <h5>Refill the ATM</h5>
+    <br>
+    <form th:action="@{/refill}" method="post">
+        <div class="form-group">
+            <label for="bankNotes20PLN">20 PLN banknotes</label>
+            <input type="number" class="form-control" id="bankNotes20PLN" placeholder="Enter the number of banknotes">
+        </div>
+        <div class="form-group">
+            <label for="bankNotes50PLN">50 PLN banknotes</label>
+            <input type="number" class="form-control" id="bankNotes50PLN" placeholder="Enter the number of banknotes">
+        </div>
+        <div class="form-group">
+            <label for="bankNotes100PLN">100 PLN banknotes</label>
+            <input type="number" class="form-control" id="bankNotes100PLN" placeholder="Enter the number of banknotes">
+        </div>
+        <div class="form-group">
+            <label for="bankNotes200PLN">200 PLN banknotes</label>
+            <input type="number" class="form-control" id="bankNotes200PLN" placeholder="Enter the number of banknotes">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-dark">Refill</button>
+    </form>
+</center>
+</body>
+</html>

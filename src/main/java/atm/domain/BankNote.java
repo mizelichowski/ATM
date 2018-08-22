@@ -7,25 +7,32 @@ public class BankNote {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Enumerated(value = EnumType.STRING)
+    protected Denomination denomination;
     protected Integer amount;
 
     public BankNote() {
     }
 
-    public BankNote(Integer amount) {
+    public BankNote(Denomination denomination, Integer amount) {
+        this.denomination = denomination;
         this.amount = amount;
     }
 
     public Long getId() {
-        return this.id;
+        return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Denomination getDenomination() {
+        return denomination;
+    }
+
+    public void setDenomination(Denomination denomination) {
+        this.denomination = denomination;
     }
 
     public Integer getAmount() {
-        return this.amount;
+        return amount;
     }
 
     public void setAmount(Integer amount) {

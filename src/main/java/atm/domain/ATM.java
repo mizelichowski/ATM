@@ -1,24 +1,15 @@
 package atm.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
 public class ATM {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private static ATM atmInstance;
+    private static BankNotes bankNotes;
 
-    public ATM() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public static ATM getInstance() {
+        if (atmInstance == null) {
+            atmInstance = new ATM();
+        }
+        return atmInstance;
     }
 }
+
+
