@@ -1,13 +1,29 @@
 package atm.controllers;
 
+import atm.domain.Refill;
+import atm.services.RefillService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class ATMRefillController {
 
+    @Autowired
+    private RefillService refillService;
+
     @GetMapping("/refill")
-    public String refillForm() {
+    public String refillForm(Model model) {
+        model.addAttribute("refill", new Refill());
         return "refill";
+    }
+
+    @PostMapping("/refill")
+    public String refillWithBankNotes(Model model, @ModelAttribute Refill refill) {
+        refillService.refill(refill);
+        return "redirect:/atmstatus";
     }
 }

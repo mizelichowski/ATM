@@ -1,8 +1,11 @@
 package atm.services;
 
+import atm.domain.BankNote;
 import atm.repositories.BankNoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ATMStatusServiceImpl implements ATMStatusService {
@@ -12,14 +15,26 @@ public class ATMStatusServiceImpl implements ATMStatusService {
 
     @Override
     public int bankNotesSum() {
-        int bankNoteSum;
-        int noOf20 = bankNoteRepository.amountOfBankNotesTwenty();
-        int noOf50 = bankNoteRepository.amountOfBankNotesFifty();
-        int noOf100 = bankNoteRepository.amountOfBankNotesHundred();
-        int noOf200 = bankNoteRepository.amountOfBankNotesTwoHundred();
+        int bankNoteTotal = 0;
+        List<BankNote> allBankNotes = (List<BankNote>) bankNoteRepository.findAll();
 
-        bankNoteSum = (noOf20 * 20) + (noOf50 * 50) + (noOf100 * 100) + (noOf200 * 200);
+        for (BankNote bankNote : allBankNotes) {
+            switch (bankNote.getDenomination()) {
+                case TWENTY:
+                    bankNoteTotal += (bankNote.getAmount() * 20);
+                    break;
+                case FIFTY:
+                    bankNoteTotal += (bankNote.getAmount() * 50);
+                    break;
+                case HUNDRED:
+                    bankNoteTotal += (bankNote.getAmount() * 100);
+                    break;
+                case TWO_HUNDRED:
+                    bankNoteTotal += (bankNote.getAmount() * 200);
+                    break;
+            }
+        }
 
-        return bankNoteSum;
+        return bankNoteTotal;
     }
 }

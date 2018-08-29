@@ -1,7 +1,7 @@
 package atm.services;
 
-import java.util.Map;
+import atm.domain.Refill;
 
 public interface RefillService {
-    void refill(Map<String, Integer> refill);
+    void refill(Refill refill);
 }

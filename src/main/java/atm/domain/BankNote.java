@@ -8,8 +8,8 @@ public class BankNote {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Enumerated(value = EnumType.STRING)
-    protected Denomination denomination;
-    protected Integer amount;
+    private Denomination denomination;
+    private Integer amount;
 
     public Long getId() {
         return id;
