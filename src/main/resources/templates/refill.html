@@ -14,21 +14,23 @@
 <center>
     <h5>Refill the ATM</h5>
     <br>
-    <form th:action="@{/refill}" method="post" >
+    <form th:action="@{/refill}" th:object="${bankNotes}" method="post" >
         <div class="form-group">
-            <label for="bankNotes20PLN">20 PLN banknotes</label>
-            <input type="number" class="form-control" id="bankNotes20PLN" placeholder="Enter the number of banknotes">
+            <label>20 PLN banknotes</label>
+            <input type="number" class="form-control" id="bankNotes20PLN" placeholder="Enter the number of banknotes"
+            th:field="*{bankNote20PLN.amount}">
         </div>
         <div class="form-group">
-            <label for="bankNotes50PLN">50 PLN banknotes</label>
-            <input type="number" class="form-control" id="bankNotes50PLN" placeholder="Enter the number of banknotes">
+            <label>50 PLN banknotes</label>
+            <input type="number" class="form-control" id="bankNotes50PLN" placeholder="Enter the number of banknotes"
+            th:field="*{bankNote50PLN.amount}">
         </div>
         <div class="form-group">
-            <label for="bankNotes100PLN">100 PLN banknotes</label>
+            <label>100 PLN banknotes</label>
             <input type="number" class="form-control" id="bankNotes100PLN" placeholder="Enter the number of banknotes">
         </div>
         <div class="form-group">
-            <label for="bankNotes200PLN">200 PLN banknotes</label>
+            <label>200 PLN banknotes</label>
             <input type="number" class="form-control" id="bankNotes200PLN" placeholder="Enter the number of banknotes">
         </div>
         <br>

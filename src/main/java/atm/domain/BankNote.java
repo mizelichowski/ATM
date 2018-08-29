@@ -11,14 +11,6 @@ public class BankNote {
     protected Denomination denomination;
     protected Integer amount;
 
-    public BankNote() {
-    }
-
-    public BankNote(Denomination denomination, Integer amount) {
-        this.denomination = denomination;
-        this.amount = amount;
-    }
-
     public Long getId() {
         return id;
     }
