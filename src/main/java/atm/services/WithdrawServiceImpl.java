@@ -62,6 +62,7 @@ public class WithdrawServiceImpl implements WithdrawService {
         int bankNote50PLNAmt = 0;
         int bankNote100PLNAmt = 0;
         int bankNote200PLNAmt = 0;
+        int afterWithdrawal = withdrawal.getAmount();
 
 
         while (isPayoutPossible(withdrawal) == true) {
@@ -69,22 +70,19 @@ public class WithdrawServiceImpl implements WithdrawService {
                 bankNote200PLNAmt += withdrawal.getAmount() / 200;
             } else {
                 bankNote200PLNAmt += withdrawal.getAmount() / 200;
-                withdrawal.setAmount(withdrawal.getAmount() - (bankNote200PLNAmt * 200));
-                if (withdrawal.getAmount() % 100 == 0) {
-                    bankNote100PLNAmt += withdrawal.getAmount() / 100;
+                afterWithdrawal -= (bankNote200PLNAmt * 200);
+                if (afterWithdrawal % 100 == 0) {
+                    bankNote100PLNAmt += afterWithdrawal / 100;
                 } else {
-                    bankNote100PLNAmt += withdrawal.getAmount() / 100;
-                    withdrawal.setAmount(withdrawal.getAmount() - (bankNote100PLNAmt * 100));
-                    if (withdrawal.getAmount() % 50 == 0) {
-                        bankNote50PLNAmt += withdrawal.getAmount() / 50;
+                    bankNote100PLNAmt += afterWithdrawal / 100;
+                    afterWithdrawal -= (bankNote100PLNAmt * 100);
+                    if (afterWithdrawal % 50 == 0) {
+                        bankNote50PLNAmt += afterWithdrawal / 50;
                     } else {
-                        bankNote50PLNAmt += withdrawal.getAmount() / 50;
-                        withdrawal.setAmount(withdrawal.getAmount() - (bankNote50PLNAmt * 50));
-                        if (withdrawal.getAmount() % 20 == 0) {
-                            bankNote20PLNAmt += withdrawal.getAmount() / 20;
-                        } else {
-                            bankNote20PLNAmt += withdrawal.getAmount() / 20;
-                            withdrawal.setAmount(withdrawal.getAmount() - (bankNote20PLNAmt * 20));
+                        bankNote50PLNAmt += afterWithdrawal / 50;
+                        afterWithdrawal -= (bankNote50PLNAmt * 50);
+                        if (afterWithdrawal % 20 == 0) {
+                            bankNote20PLNAmt += afterWithdrawal / 20;
                         }
                     }
                 }
@@ -100,7 +98,8 @@ public class WithdrawServiceImpl implements WithdrawService {
     }
 
     @Override
-    public void deductBankNotesFromATM(List<BankNote> bankNotes) {
+    public void deductBankNotesFromATM(List<BankNote> bankNotes, Withdrawal withdrawal) {
+        bankNotes = bankNoteSelectionLogic(withdrawal);
 
         for (BankNote bankNote : bankNotes) {
             switch (bankNote.getDenomination()) {

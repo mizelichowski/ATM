@@ -14,5 +14,5 @@ public interface WithdrawService {
     boolean isPayoutDivisibleBy10(Withdrawal withdrawal);
     boolean isPayoutPossible(Withdrawal withdrawal);
     List<BankNote> bankNoteSelectionLogic(Withdrawal withdrawal);
-    void deductBankNotesFromATM(List<BankNote> bankNotes);
+    void deductBankNotesFromATM(List<BankNote> bankNotes, Withdrawal withdrawal);
 }
