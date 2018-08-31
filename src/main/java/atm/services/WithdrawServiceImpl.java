@@ -20,11 +20,6 @@ public class WithdrawServiceImpl implements WithdrawService {
     private BankNoteRepository bankNoteRepository;
 
     @Override
-    public List<BankNote> getBankNoteList() {
-        return (List<BankNote>) bankNoteRepository.findAll();
-    }
-
-    @Override
     public BankNote getSpecificBankNote(Denomination denomination) {
         BankNote bankNote = bankNoteRepository.findByDenomination(denomination);
         return bankNote;
@@ -61,7 +56,7 @@ public class WithdrawServiceImpl implements WithdrawService {
     }
 
     @Override
-    public void bankNoteSelectionLogic(Withdrawal withdrawal) {
+    public List<BankNote> bankNoteSelectionLogic(Withdrawal withdrawal) {
         List<BankNote> withdrawnBankNotes = new ArrayList<>();
         int bankNote20PLNAmt = 0;
         int bankNote50PLNAmt = 0;
@@ -72,11 +67,56 @@ public class WithdrawServiceImpl implements WithdrawService {
         while (isPayoutPossible(withdrawal) == true) {
             if (withdrawal.getAmount() % 200 == 0) {
                 bankNote200PLNAmt += withdrawal.getAmount() / 200;
-            } else if (withdrawal.getAmount() % 200 > 0) {
+            } else {
                 bankNote200PLNAmt += withdrawal.getAmount() / 200;
                 withdrawal.setAmount(withdrawal.getAmount() - (bankNote200PLNAmt * 200));
+                if (withdrawal.getAmount() % 100 == 0) {
+                    bankNote100PLNAmt += withdrawal.getAmount() / 100;
+                } else {
+                    bankNote100PLNAmt += withdrawal.getAmount() / 100;
+                    withdrawal.setAmount(withdrawal.getAmount() - (bankNote100PLNAmt * 100));
+                    if (withdrawal.getAmount() % 50 == 0) {
+                        bankNote50PLNAmt += withdrawal.getAmount() / 50;
+                    } else {
+                        bankNote50PLNAmt += withdrawal.getAmount() / 50;
+                        withdrawal.setAmount(withdrawal.getAmount() - (bankNote50PLNAmt * 50));
+                        if (withdrawal.getAmount() % 20 == 0) {
+                            bankNote20PLNAmt += withdrawal.getAmount() / 20;
+                        } else {
+                            bankNote20PLNAmt += withdrawal.getAmount() / 20;
+                            withdrawal.setAmount(withdrawal.getAmount() - (bankNote20PLNAmt * 20));
+                        }
+                    }
+                }
+            }
+        }
+
+        withdrawnBankNotes.add(new BankNote(Denomination.TWENTY, bankNote20PLNAmt));
+        withdrawnBankNotes.add(new BankNote(Denomination.FIFTY, bankNote50PLNAmt));
+        withdrawnBankNotes.add(new BankNote(Denomination.HUNDRED, bankNote100PLNAmt));
+        withdrawnBankNotes.add(new BankNote(Denomination.TWO_HUNDRED, bankNote200PLNAmt));
+
+        return withdrawnBankNotes;
+    }
+
+    @Override
+    public void deductBankNotesFromATM(List<BankNote> bankNotes) {
+
+        for (BankNote bankNote : bankNotes) {
+            switch (bankNote.getDenomination()) {
+                case TWENTY:
+                    getSpecificBankNote(Denomination.TWENTY).setAmount
+                            (getSpecificBankNote(Denomination.TWENTY).getAmount() - bankNote.getAmount());
+                case FIFTY:
+                    getSpecificBankNote(Denomination.FIFTY).setAmount
+                            (getSpecificBankNote(Denomination.FIFTY).getAmount() - bankNote.getAmount());
+                case HUNDRED:
+                    getSpecificBankNote(Denomination.HUNDRED).setAmount
+                            (getSpecificBankNote(Denomination.HUNDRED).getAmount() - bankNote.getAmount());
+                case TWO_HUNDRED:
+                    getSpecificBankNote(Denomination.TWO_HUNDRED).setAmount
+                            (getSpecificBankNote(Denomination.TWO_HUNDRED).getAmount() - bankNote.getAmount());
             }
         }
     }
-
 }

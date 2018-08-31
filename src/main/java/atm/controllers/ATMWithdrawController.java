@@ -24,6 +24,7 @@ public class ATMWithdrawController {
     @PostMapping("/withdraw")
     public String withdrawnBankNotes(Model model, @ModelAttribute Withdrawal withdrawal) {
         model.addAttribute("withdrawal", withdrawal);
+        withdrawService.deductBankNotesFromATM(withdrawService.bankNoteSelectionLogic(withdrawal));
         return "withdraw";
     }
 }
