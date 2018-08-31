@@ -16,7 +16,7 @@
     <br>
     <form th:action="@{/withdraw}" th:object="${withdrawal}" method="post">
         <div class="form-group">
-            <input type="number" class="form-control" id="bankNotes100PLN" th:field="*{amount}">
+            <input type="number" min="50" class="form-control" th:field="*{amount}">
         </div>
         <br>
         <button type="submit" class="btn btn-dark">Withdraw</button>
