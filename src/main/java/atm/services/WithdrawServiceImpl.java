@@ -65,7 +65,7 @@ public class WithdrawServiceImpl implements WithdrawService {
         int afterWithdrawal = withdrawal.getAmount();
 
 
-        while (isPayoutPossible(withdrawal) == true) {
+        if (isPayoutPossible(withdrawal) == true) {
             if (withdrawal.getAmount() % 200 == 0) {
                 bankNote200PLNAmt += withdrawal.getAmount() / 200;
             } else {
@@ -106,15 +106,23 @@ public class WithdrawServiceImpl implements WithdrawService {
                 case TWENTY:
                     getSpecificBankNote(Denomination.TWENTY).setAmount
                             (getSpecificBankNote(Denomination.TWENTY).getAmount() - bankNote.getAmount());
+                    bankNoteRepository.save(bankNote);
+                    break;
                 case FIFTY:
                     getSpecificBankNote(Denomination.FIFTY).setAmount
                             (getSpecificBankNote(Denomination.FIFTY).getAmount() - bankNote.getAmount());
+                    bankNoteRepository.save(bankNote);
+                    break;
                 case HUNDRED:
                     getSpecificBankNote(Denomination.HUNDRED).setAmount
                             (getSpecificBankNote(Denomination.HUNDRED).getAmount() - bankNote.getAmount());
+                    bankNoteRepository.save(bankNote);
+                    break;
                 case TWO_HUNDRED:
                     getSpecificBankNote(Denomination.TWO_HUNDRED).setAmount
                             (getSpecificBankNote(Denomination.TWO_HUNDRED).getAmount() - bankNote.getAmount());
+                    bankNoteRepository.save(bankNote);
+                    break;
             }
         }
     }

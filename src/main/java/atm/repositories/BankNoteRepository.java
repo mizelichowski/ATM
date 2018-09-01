@@ -12,7 +12,7 @@ public interface BankNoteRepository extends CrudRepository<BankNote, Long> {
 
     @Query(
             nativeQuery = true,
-            value = "SELECT * FROM atm.bank_note WHERE denomination = :denomination"
+            value = "SELECT amount FROM atm.bank_note WHERE denomination = :denomination"
     )
     BankNote findByDenomination(@Param("denomination") Denomination denomination);
 }
