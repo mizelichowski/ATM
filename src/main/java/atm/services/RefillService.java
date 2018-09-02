@@ -1,7 +1,7 @@
 package atm.services;
 
-import atm.domain.Refill;
+import atm.domain.BankNoteTransfer;
 
 public interface RefillService {
-    void refill(Refill refill);
+    void refill(BankNoteTransfer refill);
 }

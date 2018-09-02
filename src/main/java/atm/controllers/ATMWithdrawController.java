@@ -1,6 +1,6 @@
 package atm.controllers;
 
-import atm.domain.Withdrawal;
+import atm.domain.WithdrawalAmount;
 import atm.services.WithdrawService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,15 +16,17 @@ public class ATMWithdrawController {
     private WithdrawService withdrawService;
 
     @GetMapping("/withdraw")
-    public String withdraw(Model model) {
-        model.addAttribute("withdrawal", new Withdrawal());
+    public String withdraw(Model model, WithdrawalAmount withdrawal) {
+        model.addAttribute("withdrawal", withdrawal);
         return "withdraw";
     }
 
     @PostMapping("/withdraw")
-    public String withdrawnBankNotes(Model model, @ModelAttribute Withdrawal withdrawal) {
+    public String withdrawnBankNotes(Model model, @ModelAttribute WithdrawalAmount withdrawal) {
         model.addAttribute("withdrawal", withdrawal);
-        withdrawService.deductBankNotesFromATM(withdrawService.bankNoteSelectionLogic(withdrawal), withdrawal);
+//        withdrawService.deductBankNotesFromATM
+        withdrawService.bankNoteSelectionLogic(withdrawal);
+//                        , withdrawal);
         return "withdraw";
     }
 }

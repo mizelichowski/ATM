@@ -1,6 +1,6 @@
 package atm.domain;
 
-public class Refill {
+public class BankNoteTransfer {
     private int bankNote20PLNAmt;
     private int bankNote50PLNAmt;
     private int bankNote100PLNAmt;

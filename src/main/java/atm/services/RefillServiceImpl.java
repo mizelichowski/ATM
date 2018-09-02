@@ -1,7 +1,7 @@
 package atm.services;
 
 import atm.domain.BankNote;
-import atm.domain.Refill;
+import atm.domain.BankNoteTransfer;
 import atm.repositories.BankNoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class RefillServiceImpl implements RefillService {
     private BankNoteRepository bankNoteRepository;
 
     @Override
-    public void refill(Refill refill) {
+    public void refill(BankNoteTransfer refill) {
         List<BankNote> bankNotes = (List<BankNote>) bankNoteRepository.findAll();
         int refill20PLN = refill.getBankNote20PLNAmt();
         int refill50PLN = refill.getBankNote50PLNAmt();

@@ -1,6 +1,6 @@
 package atm.controllers;
 
-import atm.domain.Refill;
+import atm.domain.BankNoteTransfer;
 import atm.services.RefillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,12 +17,12 @@ public class ATMRefillController {
 
     @GetMapping("/refill")
     public String refillForm(Model model) {
-        model.addAttribute("refill", new Refill());
+        model.addAttribute("refill", new BankNoteTransfer());
         return "refill";
     }
 
     @PostMapping("/refill")
-    public String refillWithBankNotes(Model model, @ModelAttribute Refill refill) {
+    public String refillWithBankNotes(Model model, @ModelAttribute BankNoteTransfer refill) {
         refillService.refill(refill);
         return "redirect:/atmstatus";
     }

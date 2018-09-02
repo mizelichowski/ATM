@@ -1,18 +1,24 @@
 package atm.services;
 
 import atm.domain.BankNote;
+import atm.domain.BankNoteTransfer;
 import atm.domain.Denomination;
-import atm.domain.Withdrawal;
-
-import java.util.List;
+import atm.domain.WithdrawalAmount;
 
 public interface WithdrawService {
     BankNote getSpecificBankNote(Denomination denomination);
+
     int getBankNoteSum();
-    boolean isAvailableFundsExceeded(Withdrawal withdrawal);
-    boolean isPayoutHigherThan50PLN(Withdrawal withdrawal);
-    boolean isPayoutDivisibleBy10(Withdrawal withdrawal);
-    boolean isPayoutPossible(Withdrawal withdrawal);
-    List<BankNote> bankNoteSelectionLogic(Withdrawal withdrawal);
-    void deductBankNotesFromATM(List<BankNote> bankNotes, Withdrawal withdrawal);
+
+    boolean isAvailableFundsExceeded(WithdrawalAmount amount);
+
+    boolean isPayoutHigherThan50PLN(WithdrawalAmount amount);
+
+    boolean isPayoutDivisibleBy10(WithdrawalAmount amount);
+
+    boolean isPayoutPossible(WithdrawalAmount amount);
+
+    BankNoteTransfer bankNoteSelectionLogic(WithdrawalAmount amount);
+
+    void deductBankNotesFromATM(BankNoteTransfer withdrawal, WithdrawalAmount amount);
 }
