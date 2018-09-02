@@ -8,7 +8,7 @@ import atm.repositories.BankNoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static atm.domain.Denomination.*;
+import java.util.List;
 
 @Service
 public class WithdrawServiceImpl implements WithdrawService {
@@ -32,12 +32,14 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     @Override
     public boolean isAvailableFundsExceeded(WithdrawalAmount withdrawal) {
+        System.out.println("Wyplac: " + withdrawal.getAmount() + " z: " + getBankNoteSum());
         return withdrawal.getAmount() > getBankNoteSum();
     }
 
     @Override
     public boolean isPayoutHigherThan50PLN(WithdrawalAmount withdrawal) {
-        return withdrawal.getAmount() < 50;
+        System.out.println("Wyplac minimum 50 z " + getBankNoteSum());
+        return withdrawal.getAmount() > 50;
     }
 
     @Override
@@ -47,12 +49,11 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     @Override
     public boolean isPayoutPossible(WithdrawalAmount withdrawal) {
-        boolean isPayoutPossible;
-        isPayoutPossible = !isAvailableFundsExceeded(withdrawal) && isPayoutHigherThan50PLN(withdrawal)
-                && isPayoutDivisibleBy10(withdrawal);
-        System.out.println("Payout possible!");
-
-        return isPayoutPossible;
+        System.out.println(isPayoutDivisibleBy10(withdrawal));
+        System.out.println(!isAvailableFundsExceeded(withdrawal));
+        System.out.println(isPayoutHigherThan50PLN(withdrawal));
+        return isPayoutDivisibleBy10(withdrawal) && !isAvailableFundsExceeded(withdrawal)
+                && isPayoutHigherThan50PLN(withdrawal);
     }
 
     @Override
@@ -66,19 +67,20 @@ public class WithdrawServiceImpl implements WithdrawService {
 
 
         if (isPayoutPossible(withdrawal)) {
+            System.out.println("Payout possible!");
             if (afterWithdrawal % 200 == 0) {
                 bankNote200PLNAmt = afterWithdrawal / 200;
-            } else {
+            } else if (afterWithdrawal % 200 != 0) {
                 bankNote200PLNAmt = afterWithdrawal / 200;
                 afterWithdrawal -= (bankNote200PLNAmt * 200);
                 if (afterWithdrawal % 100 == 0) {
                     bankNote100PLNAmt = afterWithdrawal / 100;
-                } else {
+                } else if (afterWithdrawal % 100 != 0) {
                     bankNote100PLNAmt = afterWithdrawal / 100;
                     afterWithdrawal -= (bankNote100PLNAmt * 100);
                     if (afterWithdrawal % 50 == 0) {
                         bankNote50PLNAmt = afterWithdrawal / 50;
-                    } else {
+                    } else if (afterWithdrawal % 50 != 0) {
                         bankNote50PLNAmt = afterWithdrawal / 50;
                         afterWithdrawal -= (bankNote50PLNAmt * 50);
                         if (afterWithdrawal % 20 == 0) {
@@ -87,6 +89,8 @@ public class WithdrawServiceImpl implements WithdrawService {
                     }
                 }
             }
+        } else {
+            System.out.println("Something is wrong!!!");
         }
 
         transfer.setBankNote20PLNAmt(transfer.getBankNote20PLNAmt() + bankNote20PLNAmt);
@@ -104,21 +108,35 @@ public class WithdrawServiceImpl implements WithdrawService {
     @Override
     public void deductBankNotesFromATM(BankNoteTransfer transfer, WithdrawalAmount withdrawal) {
         transfer = bankNoteSelectionLogic(withdrawal);
+        List<BankNote> bankNotes = (List<BankNote>) bankNoteRepository.findAll();
 
-        getSpecificBankNote(TWENTY).setAmount
-                (getSpecificBankNote(TWENTY).getAmount() - transfer.getBankNote20PLNAmt());
-        bankNoteRepository.save(bankNoteRepository.findByDenomination(TWENTY));
-
-        getSpecificBankNote(Denomination.FIFTY).setAmount
-                (getSpecificBankNote(Denomination.FIFTY).getAmount() - transfer.getBankNote50PLNAmt());
-        bankNoteRepository.save(bankNoteRepository.findByDenomination(FIFTY));
-
-        getSpecificBankNote(HUNDRED).setAmount
-                (getSpecificBankNote(HUNDRED).getAmount() - transfer.getBankNote100PLNAmt());
-        bankNoteRepository.save(bankNoteRepository.findByDenomination(HUNDRED));
-
-        getSpecificBankNote(TWO_HUNDRED).setAmount
-                (getSpecificBankNote(TWO_HUNDRED).getAmount() - transfer.getBankNote200PLNAmt());
-        bankNoteRepository.save(bankNoteRepository.findByDenomination(TWO_HUNDRED));
+        for (BankNote bankNote : bankNotes) {
+            switch (bankNote.getDenomination()) {
+                case TWENTY:
+                    if (transfer.getBankNote20PLNAmt() != 0) {
+                        bankNote.setAmount(bankNote.getAmount() - transfer.getBankNote20PLNAmt());
+                        bankNoteRepository.save(bankNote);
+                    }
+                    break;
+                case FIFTY:
+                    if (transfer.getBankNote50PLNAmt() != 0) {
+                        bankNote.setAmount(bankNote.getAmount() - transfer.getBankNote50PLNAmt());
+                        bankNoteRepository.save(bankNote);
+                    }
+                    break;
+                case HUNDRED:
+                    if (transfer.getBankNote100PLNAmt() != 0) {
+                        bankNote.setAmount(bankNote.getAmount() - transfer.getBankNote100PLNAmt());
+                        bankNoteRepository.save(bankNote);
+                    }
+                    break;
+                case TWO_HUNDRED:
+                    if (transfer.getBankNote200PLNAmt() != 0) {
+                        bankNote.setAmount(bankNote.getAmount() - transfer.getBankNote200PLNAmt());
+                        bankNoteRepository.save(bankNote);
+                    }
+                    break;
+            }
+        }
     }
 }
