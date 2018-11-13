@@ -5,6 +5,7 @@ import atm.repositories.BankNoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,6 +20,7 @@ public class ATMStatusServiceImpl implements ATMStatusService {
         List<BankNote> allBankNotes = (List<BankNote>) bankNoteRepository.findAll();
 
         for (BankNote bankNote : allBankNotes) {
+
             switch (bankNote.getDenomination()) {
                 case TWENTY:
                     bankNoteTotal += (bankNote.getAmount() * 20);

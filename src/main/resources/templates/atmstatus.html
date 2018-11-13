@@ -14,6 +14,11 @@
 <center>
     <h5>Available funds:</h5>
     <p th:text="${sumOfMoney} + ' ' + 'PLN'"></p>
+    <p th:if="${addedBankNotes} != 'null'">
+        <tr th:each="bankNote : ${addedBankNotes}">
+            <td th:text="${bankNote}"></td>
+        </tr>
+    </p>
     <p th:if="${sumOfMoney} == '0'">Please consider adding some banknotes to the ATM.</p>
     </div>
 </center>

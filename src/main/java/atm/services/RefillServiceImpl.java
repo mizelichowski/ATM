@@ -6,10 +6,12 @@ import atm.repositories.BankNoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RefillServiceImpl implements RefillService {
+    private List<Integer> bankNotes = new ArrayList<>();
 
     @Autowired
     private BankNoteRepository bankNoteRepository;
@@ -23,6 +25,7 @@ public class RefillServiceImpl implements RefillService {
         int refill200PLN = refill.getBankNote200PLNAmt();
 
         for (BankNote bankNote : bankNotes) {
+            addBanknoteToList(bankNote);
             switch (bankNote.getDenomination()) {
                 case TWENTY:
                     bankNote.setAmount(bankNote.getAmount() + refill20PLN);
@@ -42,5 +45,15 @@ public class RefillServiceImpl implements RefillService {
                     break;
             }
         }
+    }
+
+    @Override
+    public void addBanknoteToList(BankNote bankNote) {
+        this.bankNotes.add(bankNote.getDenomination().getAmount());
+    }
+
+    @Override
+    public List<Integer> displayAddedBanknotes() {
+        return this.bankNotes;
     }
 }
