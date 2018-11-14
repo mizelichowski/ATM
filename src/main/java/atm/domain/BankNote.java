@@ -26,4 +26,12 @@ public class BankNote {
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "BankNote{" +
+                "denomination=" + denomination +
+                ", amount=" + amount +
+                '}';
+    }
 }

@@ -29,7 +29,6 @@ public class ATMRefillController {
         List<Integer> addedBankNotes = refillService.displayAddedBanknotes();
         model.addAttribute("addedBankNotes", addedBankNotes);
 
-
         refillService.refill(refill);
         return "redirect:/atmstatus";
     }
