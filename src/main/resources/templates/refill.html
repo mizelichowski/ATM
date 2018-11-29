@@ -18,22 +18,22 @@
         <div class="form-group">
             <label>20 PLN banknotes</label>
             <input type="number" class="form-control" id="bankNotes20PLN" placeholder="Enter the number of banknotes"
-                   th:field="*{bankNote20PLNAmt}">
+                   th:field="*{bankNote20PLNAmt}" min="0">
         </div>
         <div class="form-group">
             <label>50 PLN banknotes</label>
             <input type="number" class="form-control" id="bankNotes50PLN" placeholder="Enter the number of banknotes"
-                   th:field="*{bankNote50PLNAmt}">
+                   th:field="*{bankNote50PLNAmt}" min="0">
         </div>
         <div class="form-group">
             <label>100 PLN banknotes</label>
             <input type="number" class="form-control" id="bankNotes100PLN" placeholder="Enter the number of banknotes"
-                   th:field="*{bankNote100PLNAmt}">
+                   th:field="*{bankNote100PLNAmt}" min="0">
         </div>
         <div class="form-group">
             <label>200 PLN banknotes</label>
             <input type="number" class="form-control" id="bankNotes200PLN" placeholder="Enter the number of banknotes"
-                   th:field="*{bankNote200PLNAmt}">
+                   th:field="*{bankNote200PLNAmt}" min="0">
         </div>
         <br>
         <button type="submit" class="btn btn-dark">Refill</button>

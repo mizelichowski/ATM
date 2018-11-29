@@ -5,6 +5,8 @@ import atm.domain.BankNoteTransfer;
 import atm.domain.Denomination;
 import atm.domain.WithdrawalAmount;
 
+import java.util.HashMap;
+
 public interface WithdrawService {
     BankNote getSpecificBankNote(Denomination denomination);
 
@@ -21,4 +23,6 @@ public interface WithdrawService {
     BankNoteTransfer bankNoteSelectionLogic(WithdrawalAmount amount);
 
     void deductBankNotesFromATM(BankNoteTransfer withdrawal, WithdrawalAmount amount);
+
+    HashMap<Denomination, Integer> withdrawnBankNotesMap();
 }

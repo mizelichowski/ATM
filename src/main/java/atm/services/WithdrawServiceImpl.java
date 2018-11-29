@@ -8,10 +8,12 @@ import atm.repositories.BankNoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class WithdrawServiceImpl implements WithdrawService {
+    private HashMap<Denomination, Integer> withdrawnBankNotes = new HashMap<>();
 
     @Autowired
     private ATMStatusService atmStatusService;
@@ -58,6 +60,8 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     @Override
     public BankNoteTransfer bankNoteSelectionLogic(WithdrawalAmount withdrawal) {
+
+
         BankNoteTransfer transfer = new BankNoteTransfer();
         int bankNote20PLNAmt = 0;
         int bankNote50PLNAmt = 0;
@@ -68,7 +72,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 
         if (isPayoutPossible(withdrawal)) {
             System.out.println("Payout possible!");
-            if (afterWithdrawal % 200 == 0) {
+            if (afterWithdrawal % 200 == 0 ) {
                 bankNote200PLNAmt = afterWithdrawal / 200;
             } else if (afterWithdrawal % 200 != 0) {
                 bankNote200PLNAmt = afterWithdrawal / 200;
@@ -115,28 +119,42 @@ public class WithdrawServiceImpl implements WithdrawService {
                 case TWENTY:
                     if (transfer.getBankNote20PLNAmt() != 0) {
                         bankNote.setAmount(bankNote.getAmount() - transfer.getBankNote20PLNAmt());
+                        this.withdrawnBankNotes.put(bankNote.getDenomination(), transfer.getBankNote20PLNAmt());
+                        withdrawnBankNotes.put(bankNote.getDenomination(), transfer.getBankNote20PLNAmt());
+
                         bankNoteRepository.save(bankNote);
                     }
                     break;
                 case FIFTY:
                     if (transfer.getBankNote50PLNAmt() != 0) {
                         bankNote.setAmount(bankNote.getAmount() - transfer.getBankNote50PLNAmt());
+                        this.withdrawnBankNotes.put(bankNote.getDenomination(), transfer.getBankNote50PLNAmt());
+                        withdrawnBankNotes.put(bankNote.getDenomination(), transfer.getBankNote50PLNAmt());
                         bankNoteRepository.save(bankNote);
                     }
                     break;
                 case HUNDRED:
                     if (transfer.getBankNote100PLNAmt() != 0) {
                         bankNote.setAmount(bankNote.getAmount() - transfer.getBankNote100PLNAmt());
+                        this.withdrawnBankNotes.put(bankNote.getDenomination(), transfer.getBankNote100PLNAmt());
+                        withdrawnBankNotes.put(bankNote.getDenomination(), transfer.getBankNote100PLNAmt());
                         bankNoteRepository.save(bankNote);
                     }
                     break;
                 case TWO_HUNDRED:
                     if (transfer.getBankNote200PLNAmt() != 0) {
                         bankNote.setAmount(bankNote.getAmount() - transfer.getBankNote200PLNAmt());
+                        this.withdrawnBankNotes.put(bankNote.getDenomination(), transfer.getBankNote200PLNAmt());
+                        withdrawnBankNotes.put(bankNote.getDenomination(), transfer.getBankNote200PLNAmt());
                         bankNoteRepository.save(bankNote);
                     }
                     break;
             }
         }
+    }
+
+    @Override
+    public HashMap<Denomination, Integer> withdrawnBankNotesMap() {
+        return withdrawnBankNotes;
     }
 }

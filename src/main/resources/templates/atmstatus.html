@@ -18,16 +18,23 @@
     <h6>Available banknotes:</h6>
     <p th:if="${availableBankNotes} != 'null'">
         <tr th:each="bankNote : ${availableBankNotes}">
-            <td th:field="*{bankNote.denomination}"></td>
+            <td th:text="${bankNote}"></td>
+        </tr>
+    </p>
+    <br>
+    <h6>Recently withdrawn banknotes:</h6>
+    <p th:if="${withdrawnBankNotesMap} != 'null'">
+    <tr th:each="bankNote : ${withdrawnBankNotes}">
+            <td th:text="${bankNote}"></td>
         </tr>
     </p>
     <!--<p th:if="${addedBankNotes} != 'null'">-->
-        <!--<tr th:each="bankNote : ${addedBankNotes}">-->
-            <!--<td th:text="${bankNote}"></td>-->
-        <!--</tr>-->
+    <!--<tr th:each="bankNote : ${addedBankNotes}">-->
+    <!--<td th:text="${bankNote}"></td>-->
+    <!--</tr>-->
     <!--</p>-->
     <br>
-    <p th:if="${sumOfMoney} == '0'">Please consider adding some banknotes to the ATM.</p>
+    <p th:if="${sumOfMoney} == '0'">The ATM is empty! Please consider adding some banknotes to the ATM.</p>
     </div>
 </center>
 </div>
